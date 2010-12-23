@@ -1,10 +1,3 @@
-def features_to_classes( features ):
-	'''Takes a dictionary from feature names to the set of phonemes with that feature.
-	Returns a NaturalClassSet of natural classes induced from those features.'''
-	alphabet = set([])
-	for feature_phones in feaures.values():
-		alphabet.update(feature_phones)
-	return NaturalClassSet( alphabet, set(features.values()) )
 
 class NaturalClassSet( object ):
 	def __init__(self, alphabet, classes ):
@@ -28,13 +21,17 @@ class NaturalClassSet( object ):
 		return item in self.classes
 	
 	def _fill_natural_classes(self, classes ):
-		'''The intersection of any two natural classes should be a natural class.
-		This function takes a set of sets (of phonemes) and intersects each set 
-		with each other set, putting the result in a frozen set and adding it to the
-		total set of natural classes. It does this until the set of classes stops
-		growing, and returns the resulting set.
+		'''The intersection of any two natural classes should be a natural 
+		class.
 		
-		This ensures that the set of natural classes is closed under set intersection.'''
+		This function takes a set of sets (of phonemes) and intersects each set 
+		with each other set, putting the result in a frozen set and adding it 
+		to the total set of natural classes. It does this until the set of 
+		classes stops growing, and returns the resulting set.
+		
+		This ensures that the set of natural classes is closed under set
+		intersection.
+		'''
 		full_class_set = set([])
 		start_size = len(classes)
 		for c in classes:

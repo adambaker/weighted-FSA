@@ -1,7 +1,7 @@
 import unittest
-import wfsa
+import fsa.wfsa as wfsa
 from math import log, ceil
-from semiring import *
+from fsa.semiring import *
 
 
 class TestMultFSA( unittest.TestCase ):

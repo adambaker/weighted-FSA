@@ -7,7 +7,7 @@ class NaturalClassWFSA( ParametrizedWFSA ):
 	'''
 	A ParametrizedWFSA whose arc labels are sets of phones corresponding to
 		a natural class.
-	classes: A superset of the natural classes used in this WFSA. Each
+	classes: A subset of the natural classes used in this WFSA. Each
 			natural class is a set of phonemes in that class. The full set of
 			natural classes is gotten by closing this set under intersection 
 			and adding all the phonemes in alphabet.
@@ -30,40 +30,7 @@ class NaturalClassWFSA( ParametrizedWFSA ):
 		self.complexity = self._complex()
 	
 	def _complex(self):
-		states = integer_code_len(len(self.states))
-		stops = integer_code_len(len(self.stops))
-		param = integer_code_len(len(self.params))
-		
-		weight_cost = log(len(self.params)+1, 2)
-		
-		#put num_arcs and labels_len in singleton lists so they can be \
-		#updated in a callback function.
-		num_arcs = [0] 
-		labels_len = [0]
-		
-		def count_arcs_and_sum_codelength_of_labels(source, label, dest, weight):
-			num_arcs[0] += 1
-			if label == '_other':
-				labels_len[0] += -log(
-					len(self.alphabet)/self.nat_class_set.labels_len, 
-					2
-				)
-			else:
-				labels_len[0] += -log(
-					len(label)/self.nat_class_set.labels_len, 
-					2
-				)
-				
-		for_each_arc( self.cat_arcs, count_arcs_and_sum_codelength_of_labels )
-			
-		#unpackage num_arcs and labels_len
-		num_arcs = num_arcs[0]
-		labels_len = labels_len[0]
-		
-		state_cost = log(len(self.states),2)
-		return num_arcs*(2*state_cost + weight_cost) + labels_len + \
-			len(self.stops)*(state_cost + weight_cost) + len(self.params)*self.weight_len\
-			+ integer_code_len(num_arcs) + param + states + stops
+        pass
 	
 class CountingWFSA( NaturalClassWFSA ):
 	'''A NaturalClassWFSA with a single parameter fixed to 1.0. It can be

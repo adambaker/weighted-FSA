@@ -39,7 +39,8 @@ class State(object):
 	>>> state5.stop()
 	0.25 in a probability semiring.
 	'''
-	def __init__(self, name, alphabet, stop_weight, arcsets=None, transitions=None):
+	def __init__(self, name, alphabet, stop_weight, arcsets=None,
+            transitions=None):
 		self.name = name
 		self._alphabet = frozenset(alphabet)
 		self._stop_weight = stop_weight
