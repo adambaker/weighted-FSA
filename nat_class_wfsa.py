@@ -1,6 +1,7 @@
 from wfsa import *
 from param_wfsa import ParametrizedWFSA
 from math import log
+from nat_class_set import NaturalClassSet
 	
 
 class NaturalClassWFSA( ParametrizedWFSA ):

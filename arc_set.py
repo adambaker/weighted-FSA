@@ -23,18 +23,18 @@ class NatClassArcSet(ArcSet):
         self.dest = dest
         self.letters = frozenset(letters)
         self.weight = weight
-        self.labels = get_covering_labels(frozenset(letters),
+        self.labels = _get_covering_labels(frozenset(letters),
              nat_class_set.classes)
 
 
-def get_covering_labels( letters, classes ):
+def _get_covering_labels( letters, classes ):
     ''' 
     >>> from nat_class_set import NaturalClassSet
     >>> coronal = frozenset('tpbdrzlnm')
     >>> stop = frozenset('bd')
     >>> nasal = frozenset('nm')
     >>> classes = NaturalClassSet('ptkbdgrszlmn', set([coronal, nasal, stop]))
-    >>> labels = get_covering_labels(set('bdrzlmn'), classes.classes)
+    >>> labels = _get_covering_labels(set('bdrzlmn'), classes.classes)
     >>> len(labels)
     5
     >>> stop in labels
@@ -47,20 +47,20 @@ def get_covering_labels( letters, classes ):
     True
     >>> frozenset('r') in labels
     True
-    >>> labels = get_covering_labels(set('tpbdrzlnm'), classes.classes)
+    >>> labels = _get_covering_labels(set('tpbdrzlnm'), classes.classes)
     >>> labels == set([coronal])
     True
-    '''
+    '''  #this doctest has been adapted to test NatClassArcSet in 
+         #test/test_nat_class_set.py.
     coverage = set([])
     covering_labels = set([])
-    classes = classes.union(covering_labels) #making a copy of classes
+    classes = set(classes) 
     while True:
         to_cover = letters.difference(coverage)
         to_add = frozenset([])
-        for cls in classes:
-            if cls.issubset(to_cover) and \
-                            len(cls) > len(to_add):
-                to_add = cls
+        for class_ in classes:
+            if class_.issubset(to_cover) and len(class_) > len(to_add):
+                to_add = class_
         if len(to_add) > 0:
             covering_labels.add(to_add)
             coverage.update(to_add)
@@ -69,7 +69,7 @@ def get_covering_labels( letters, classes ):
     #only singletons left to fill out the rest of the letters.
     for letter in letters.difference(coverage):
         covering_labels.add(frozenset([letter]))
-    return covering_labels
+    return frozenset(covering_labels)
 
 if __name__ == '__main__':
     import doctest
